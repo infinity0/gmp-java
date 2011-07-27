@@ -1,0 +1,61 @@
+--- gnu/java/lang/CPStringBuilder.java
++++ gnu/java/lang/CPStringBuilder.java
+@@ -38,8 +38,6 @@ exception statement from your version. */
+ 
+ package gnu.java.lang;
+ 
+-import gnu.classpath.SystemProperties;
+-
+ import java.io.Serializable;
+ 
+ /**
+@@ -91,8 +89,7 @@ public final class CPStringBuilder
+ 
+   static
+   {
+-    String cap =
+-      SystemProperties.getProperty("gnu.classpath.cpstringbuilder.capacity");
++    String cap = null;
+     if (cap == null)
+       DEFAULT_CAPACITY = 32;
+     else
+--- gnu/java/math/BigInteger.java	2011-01-11 19:46:05.000000000 +0000
++++ gnu/java/math/BigInteger.java	2011-07-28 00:20:54.845593089 +0100
+@@ -36,9 +36,7 @@
+ exception statement from your version. */
+ 
+ 
+-package java.math;
+-
+-import gnu.classpath.Configuration;
++package gnu.java.math;
+ 
+ import gnu.java.lang.CPStringBuilder;
+ import gnu.java.math.GMP;
+@@ -94,8 +92,7 @@
+   /** The alter-ego GMP instance for this. */
+   private transient GMP mpz;
+ 
+-  private static final boolean USING_NATIVE = Configuration.WANT_NATIVE_BIG_INTEGER
+-                                              && initializeLibrary();
++  private static final boolean USING_NATIVE = initializeLibrary();
+ 
+   static
+   {
+@@ -417,14 +414,14 @@
+     boolean result;
+     try
+     {
+-      System.loadLibrary("javamath");
++      System.loadLibrary("gmp-jni");
+       GMP.natInitializeLibrary();
+       result = true;
+     }
+     catch (Throwable x)
+     {
+       result = false;
+-      if (Configuration.DEBUG)
++      if (Boolean.getBoolean("gnu.native.debug"))
+         {
+           log.info("Unable to use native BigInteger: " + x);
+           log.info("Will use a pure Java implementation instead");
