@@ -1,6 +1,14 @@
-GCJ_VERSION := 4.6.1
-CHECKSUM_MD5 := 32431ba42c1d18e64f2abfdfc834ef94
-CHECKSUM_SHA256 := 728462275a0532714063803282d1ea815e35b5fd91a96f65a1f0a14da355765f
+# Makefile for gmp-java
+# a small java/jni library containing only BigInteger from gcc-java
+
+# build variables, for users
+
+# checksums are for the .tar.bz2 source archives
+GCJ_VERSION ?= 4.6.1
+CHECKSUM_MD5 ?= 32431ba42c1d18e64f2abfdfc834ef94
+CHECKSUM_SHA256 ?= 728462275a0532714063803282d1ea815e35b5fd91a96f65a1f0a14da355765f
+
+# rest of build script, for devs
 
 SRC_HOME := gcc-$(GCJ_VERSION)/libjava/classpath
 SRC_JAVA_0 := gnu/classpath/Pointer32.java \
@@ -37,7 +45,7 @@ GMP.jar: $(SRC_JAVA:.java=.class)
 gnu_java_math_GMP.h: gnu/java/math/GMP.class
 	javah -jni $(subst /,.,$(<:.class=))
 
-libgmp-jni.so: $(SRC_C) gnu_java_math_GMP.h
+libgmp-jni.so: $(SRC_C) gnu_java_math_GMP.h config.h
 	gcc $(INCLUDES) -I. $(SRC_C) -o $@ $(LIBS) $(CFLAGS)
 
 $(SRC_C_ALL): src_c

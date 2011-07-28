@@ -4,7 +4,7 @@ Make sure you have libgmp-dev (or equiv) installed, then:
 
 $ make
 
-You should check everything works: 
+You should check everything works:
 
 $ make test
 javah -jni gnu.java.math.GMP
@@ -17,3 +17,8 @@ if you don't see "using pure java implementation", all is well
 1999999999999999999999999999999999999999999999999999999999999999997 actual
 test passed
 
+# TODO
+
+debian build script that links against gcj-4.*-jre-lib
+- this requires splitting java.diff/Makefile to build a BigInteger with only
+  a package change (to gnu.java.math), minus all the other changes
