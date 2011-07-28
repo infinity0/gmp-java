@@ -1,38 +1,19 @@
---- gnu/java/lang/CPStringBuilder.java
-+++ gnu/java/lang/CPStringBuilder.java
-@@ -38,8 +38,6 @@ exception statement from your version. */
- 
- package gnu.java.lang;
- 
--import gnu.classpath.SystemProperties;
--
- import java.io.Serializable;
- 
- /**
-@@ -91,8 +89,7 @@ public final class CPStringBuilder
- 
-   static
-   {
--    String cap =
--      SystemProperties.getProperty("gnu.classpath.cpstringbuilder.capacity");
-+    String cap = null;
-     if (cap == null)
-       DEFAULT_CAPACITY = 32;
-     else
 --- gnu/java/math/BigInteger.java	2011-01-11 19:46:05.000000000 +0000
-+++ gnu/java/math/BigInteger.java	2011-07-28 00:20:54.845593089 +0100
-@@ -36,9 +36,7 @@
++++ gnu/java/math/BigInteger.java	2011-07-28 01:08:56.820479990 +0100
+@@ -36,11 +36,8 @@
  exception statement from your version. */
  
  
 -package java.math;
--
--import gnu.classpath.Configuration;
 +package gnu.java.math;
  
- import gnu.java.lang.CPStringBuilder;
+-import gnu.classpath.Configuration;
+-
+-import gnu.java.lang.CPStringBuilder;
  import gnu.java.math.GMP;
-@@ -94,8 +92,7 @@
+ import gnu.java.math.MPN;
+ 
+@@ -94,8 +91,7 @@
    /** The alter-ego GMP instance for this. */
    private transient GMP mpz;
  
@@ -42,7 +23,7 @@
  
    static
    {
-@@ -417,14 +414,14 @@
+@@ -417,14 +413,14 @@
      boolean result;
      try
      {
@@ -59,3 +40,21 @@
          {
            log.info("Unable to use native BigInteger: " + x);
            log.info("Will use a pure Java implementation instead");
+@@ -1759,7 +1755,7 @@
+     return shift(this, -n);
+   }
+ 
+-  private void format(int radix, CPStringBuilder buffer)
++  private void format(int radix, StringBuilder buffer)
+   {
+     if (words == null)
+       buffer.append(Integer.toString(ival, radix));
+@@ -1836,7 +1832,7 @@
+     if (ival <= 2)
+       return Long.toString(longValue(), radix);
+     int buf_size = ival * (MPN.chars_per_word(radix) + 1);
+-    CPStringBuilder buffer = new CPStringBuilder(buf_size);
++    StringBuilder buffer = new StringBuilder(buf_size);
+     format(radix, buffer);
+     return buffer.toString();
+   }
