@@ -1,4 +1,8 @@
-SRC_HOME := gcc-4.6.1/libjava/classpath
+GCJ_VERSION := 4.6.1
+CHECKSUM_MD5 := 32431ba42c1d18e64f2abfdfc834ef94
+CHECKSUM_SHA256 := 728462275a0532714063803282d1ea815e35b5fd91a96f65a1f0a14da355765f
+
+SRC_HOME := gcc-$(GCJ_VERSION)/libjava/classpath
 SRC_JAVA_0 := gnu/classpath/Pointer32.java \
               gnu/classpath/Pointer64.java \
               gnu/classpath/Pointer.java \
@@ -18,7 +22,7 @@ CFLAGS := -fPIC -Wall -shared
 JAVA_FLAGS := -Xlint -cp .
 
 .PHONY: all
-all: libgmp-jni.so GMP.jar
+all: libgmp-jni.so GMP.jar ;
 
 .PHONY: test
 test: Test.class libgmp-jni.so
@@ -54,7 +58,9 @@ gcc-%/libjava/classpath: gcc-java-%.tar.bz2
 	tar xf $<
 
 gcc-java-%.tar.bz2:
-	wget "ftp://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-$*/gcc-java-$*.tar.bz2"
+	wget -SN "ftp://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-$*/gcc-java-$*.tar.bz2"
+	echo "$(CHECKSUM_MD5)  gcc-java-$*.tar.bz2" | md5sum -c || exit 1
+	echo "$(CHECKSUM_SHA256)  gcc-java-$*.tar.bz2" | sha256sum -c || exit 1
 
 .PHONY: clean
 clean:

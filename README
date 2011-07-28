@@ -1,0 +1,19 @@
+# Build
+
+Make sure you have libgmp-dev (or equiv) installed, then:
+
+$ make
+
+You should check everything works: 
+
+$ make test
+javah -jni gnu.java.math.GMP
+java -Djava.library.path=. -Dgnu.native.debug=true Test
+if you don't see "using pure java implementation", all is well
+ 999999999999999999999999999999999999999999999999999999999999999999
++999999999999999999999999999999999999999999999999999999999999999998
+=
+1999999999999999999999999999999999999999999999999999999999999999997 expected
+1999999999999999999999999999999999999999999999999999999999999999997 actual
+test passed
+
