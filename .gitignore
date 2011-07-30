@@ -1,8 +1,7 @@
 /*.jar
-/*.class
-/gcc-*/
-/gnu/
-/gnu_java_math_GMP.*
-/jcl.*
 /*.so
-/src_*
+/gcc-*/
+/src_*/
+/bin_*/
+/c/
+/run/

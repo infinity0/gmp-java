@@ -1,11 +1,8 @@
---- gnu/java/math/BigInteger.java	2011-01-11 19:46:05.000000000 +0000
-+++ gnu/java/math/BigInteger.java	2011-07-28 01:08:56.820479990 +0100
-@@ -36,11 +36,8 @@
- exception statement from your version. */
+--- a/gnu/java/math/BigInteger.java	2011-07-28 16:10:21.836676330 +0100
++++ b/gnu/java/math/BigInteger.java	2011-07-28 16:12:11.724650975 +0100
+@@ -38,9 +38,6 @@
  
- 
--package java.math;
-+package gnu.java.math;
+ package gnu.java.math;
  
 -import gnu.classpath.Configuration;
 -

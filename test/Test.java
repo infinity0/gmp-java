@@ -10,11 +10,10 @@ public class Test {
 		}
 		BigInteger a = new BigInteger("999999999999999999999999999999999999999999999999999999999999999999");
 		BigInteger b = new BigInteger("999999999999999999999999999999999999999999999999999999999999999998");
-		System.out.println(" " + a);
-		System.out.println("+" + b);
-		System.out.println("=");
-		System.out.println("1999999999999999999999999999999999999999999999999999999999999999997 expected");
-		System.out.println(a.add(b) + " actual");
+		System.out.println("   " + a);
+		System.out.println("+  " + b);
+		System.out.println("= 1999999999999999999999999999999999999999999999999999999999999999997 expected");
+		System.out.println("? " + a.add(b) + " actual");
 		System.out.println("test passed");
 	}
 }
