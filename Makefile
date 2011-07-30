@@ -12,6 +12,8 @@ GCJ_JAR ?= /usr/share/java/libgcj.jar
 GCJ_JNI ?= /usr/lib/jvm/java-gcj/lib/
 GCJ_JSRC ?= /usr/share/java/libgcj-src-4.6.zip
 
+JUNIT_JAR ?= /usr/share/java/junit.jar
+
 ## rest of build script, for devs
 
 DIR_C := c
@@ -51,6 +53,10 @@ ABS_JSRC_T := $(shell find $(DIR_JSRC_T) -name *.java)
 
 CP_JBIN_D := $(DIR_JBIN_D):$(GCJ_JAR)
 CP_JBIN_S := $(DIR_JBIN_S)
+CP_JBIN_T := $(DIR_JBIN_T):$(JUNIT_JAR)
+
+LP_JBIN_D := -Djava.library.path=$(GCJ_JNI)
+LP_JBIN_S := -Djava.library.path=.
 
 ORIG_C_P := classpath java-math
 ORIG_C := $(ORIG)/native/jni
@@ -63,7 +69,7 @@ ABS_CSRC_0 := $(TGT_CSRC_0:%=$(DIR_C)/%)
 ABS_CSRC_C := $(TGT_CSRC_C:%=$(DIR_C)/%)
 ABS_CSRC_A := $(TGT_CSRC_A:%=$(DIR_C)/%)
 
-WILL_BUILD_D := $(filter all check check_d gnumath_d.jar,$(MAKECMDGOALS))
+WILL_BUILD_D := $(filter all check check_d gmp.jar,$(MAKECMDGOALS))
 GCJ_JSRC_E := $(wildcard $(GCJ_JSRC))
 
 
@@ -72,13 +78,13 @@ GCJ_JSRC_E := $(wildcard $(GCJ_JSRC))
 # dist targets
 
 .PHONY: all
-all: gnumath_s.jar gnumath_d.jar libgmp-jni.so ;
+all: gmp-nogcj.jar gmp.jar libgmp-jni.so ;
 
-gnumath_d.jar: $(ABS_JBIN_D)
+gmp.jar: $(ABS_JBIN_D)
 	# TODO: fix Class-Path to point to GCJ_JAR
 	cd $(DIR_JBIN_D) && jar cvf $(PWD)/$@ $(TGT_JBIN_D)
 
-gnumath_s.jar: $(ABS_JBIN_S)
+gmp-nogcj.jar: $(ABS_JBIN_S)
 	cd $(DIR_JBIN_S) && jar cvf $(PWD)/$@ $(TGT_JBIN_S)
 
 libgmp-jni.so: $(ABS_CSRC_A)
@@ -90,10 +96,12 @@ libgmp-jni.so: $(ABS_CSRC_A)
 check: check_d check_s ;
 
 check_d: $(DIR_JBIN_T) $(ABS_JBIN_D)
-	java $(TEST_FLAGS) -cp $(DIR_JBIN_T):$(CP_JBIN_D) -Djava.library.path=$(GCJ_JNI) Test
+	java $(TEST_FLAGS) -cp $(CP_JBIN_T):$(CP_JBIN_D) $(LP_JBIN_D) junit.textui.TestRunner Test
+	java $(TEST_FLAGS) -cp $(CP_JBIN_T):$(CP_JBIN_D) $(LP_JBIN_D) junit.textui.TestRunner Benchmark
 
 check_s: $(DIR_JBIN_T) $(ABS_JBIN_S) libgmp-jni.so
-	java $(TEST_FLAGS) -cp $(DIR_JBIN_T):$(CP_JBIN_S) -Djava.library.path=. Test
+	java $(TEST_FLAGS) -cp $(CP_JBIN_T):$(CP_JBIN_S) $(LP_JBIN_S) junit.textui.TestRunner Test
+	java $(TEST_FLAGS) -cp $(CP_JBIN_T):$(CP_JBIN_S) $(LP_JBIN_S) junit.textui.TestRunner Benchmark
 
 ## DIR_JBIN_T - classes, test
 
@@ -107,7 +115,7 @@ endif
 
 $(DIR_JBIN_T): $(DIR_JSRC_T) $(_ABS_JBIN)
 	mkdir -p $(DIR_JBIN_T)
-	javac $(JAVA_FLAGS) -d $(DIR_JBIN_T) -cp $(DIR_JSRC_T):$(_CP_JBIN) $(ABS_JSRC_T)
+	javac $(JAVA_FLAGS) -d $(DIR_JBIN_T) -cp $(DIR_JSRC_T):$(_CP_JBIN):$(JUNIT_JAR) $(ABS_JSRC_T)
 
 ## DIR_JBIN_D - classes, linked to gcj jar
 
@@ -123,7 +131,7 @@ $(DIR_JBIN_S)/%.class: $(DIR_JSRC_S)/%.java $(ABS_JSRC_S) | $(DIR_JBIN_S)
 
 ifdef GCJ_JSRC_E
 _ORIG_D = $(GCJ_JSRC)
-_COPY = cd $(DIR_JSRC_D)/gnu && unzip $(GCJ_JSRC) $*
+_COPY = cd $(DIR_JSRC_D)/gnu && unzip -o $(GCJ_JSRC) $*
 else
 _ORIG_D = $(ORIG)
 _COPY = cd $(ORIG) && cp -t $(PWD)/$(DIR_JSRC_D)/gnu --parents $*

@@ -20,5 +20,4 @@ test passed
 # TODO
 
 debian build script that links against gcj-4.*-jre-lib
-- this requires splitting java.diff/Makefile to build a BigInteger with only
-  a package change (to gnu.java.math), minus all the other changes
+add more tests, including NativeBigIntegerTest from freenet/i2p

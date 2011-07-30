@@ -1,5 +1,5 @@
---- a/gnu/java/math/BigInteger.java	2011-07-28 16:10:21.836676330 +0100
-+++ b/gnu/java/math/BigInteger.java	2011-01-11 19:46:05.000000000 +0000
+--- a/gnu/java/math/BigInteger.java	2011-01-11 19:46:05.000000000 +0000
++++ b/gnu/java/math/BigInteger.java	2011-07-30 16:35:50.109911630 +0100
 @@ -36,7 +36,7 @@
  exception statement from your version. */
  
@@ -9,3 +9,11 @@
  
  import gnu.classpath.Configuration;
  
+@@ -65,6 +65,7 @@
+ public class BigInteger extends Number implements Comparable<BigInteger>
+ {
+   private static final Logger log = Logger.getLogger(BigInteger.class.getName());
++  public static boolean usingNative() { return USING_NATIVE; }
+ 
+   /** All integers are stored in 2's-complement form.
+    * If words == null, the ival is the value of this BigInteger.
