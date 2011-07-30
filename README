@@ -34,6 +34,22 @@ GCJ and uses it to build this library.
 # edit Makefile vars JUNIT_*
 $ make gmp-nogcj.jar libgmp-jni.so check_s
 
+# Quirks
+
+We should probably use ant to do the javac/jar/junit-related stuff. There was
+enough non-java stuff that I initially decided to use GNU make, and ended up
+sticking with it.
+
+# Credits
+
+Inspired by https://bitbucket.org/dfdeshom/gmp-java/overview
+
+I decided to code this version to be
+- easier to track modifications from upstream GCJ
+- use the actual BigInteger class, which is immutable, rather than try to
+  retrofit the lower-level GMP class, which is mutable in GCJ, into a
+  BigInteger-style interface (i.e. similar methods).
+
 # TODO
 
 debian build script that builds gmp.jar
