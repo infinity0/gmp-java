@@ -1,23 +1,39 @@
 # Build
 
-Make sure you have libgmp-dev (or equiv) installed, then:
+There are two forms ("d" and "s") of this library. Each of these require
+different Java class/library paths for user code to work; see the corresponding
+check_? target for details.
 
-$ make
+The "meat" of this library is the class gnu.java.math.BigInteger. In GCJ, this
+class is simply java.math.BigInteger, but here we rename it so that you can use
+the former in a non-GCJ JVM too.
 
-You should check everything works:
+## Build against libgmp-dev and libgcj.jar
 
-$ make test
-javah -jni gnu.java.math.GMP
-java -Djava.library.path=. -Dgnu.native.debug=true Test
-if you don't see "using pure java implementation", all is well
- 999999999999999999999999999999999999999999999999999999999999999999
-+999999999999999999999999999999999999999999999999999999999999999998
-=
-1999999999999999999999999999999999999999999999999999999999999999997 expected
-1999999999999999999999999999999999999999999999999999999999999999997 actual
-test passed
+libgcj.jar is the GNU Classpath / GCJ implementation of standard java library,
+so you need GCJ installed to build and run against this form. Note that this
+does *not* mean you need to use GCJ as your JVM; you just need to be able to
+link against its jars and libs on your file system.
+
+This is the preferred form if you already have GCJ installed (default on many
+GNU/Linux distributions), and results in the least code duplication from GCJ.
+
+# install libgmp-dev, gcj-4.?-jre-lib, and optionally gcj-4.?-source[1]
+# edit Makefile vars JUNIT_*, GCJ_*
+$ make gmp.jar check_d
+
+[1] if not, we fall back to downloading GCJ source from GNU servers
+
+## Build against libgmp-dev only
+
+This form is useful for people that are unable to, or refuse to, have GCJ
+installed on their machines. It copies a minimal set of math-related code from
+GCJ and uses it to build this library.
+
+# install libgmp-dev
+# edit Makefile vars JUNIT_*
+$ make gmp-nogcj.jar libgmp-jni.so check_s
 
 # TODO
 
-debian build script that links against gcj-4.*-jre-lib
-add more tests, including NativeBigIntegerTest from freenet/i2p
+debian build script that builds gmp.jar
