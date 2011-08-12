@@ -1,0 +1,2 @@
+# depends on a specific jre lib, not for jvm reasons
+libgmp-java binary: needless-dependency-on-jre
