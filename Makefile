@@ -39,6 +39,9 @@ jvmdir ?= $(libdir)/jvm
 # rest of build script, for devs
 ########################################################################
 
+PACKAGE := gmp-java
+VERSION := 0.1
+
 DIR_C := c
 DIR_JSRC_S := src_s
 DIR_JBIN_S := bin_s
@@ -221,7 +224,7 @@ $(DIR_C):
 	mkdir -p $@
 
 gcc-%/libjava/classpath: gcc-java-%.tar.bz2
-	tar xf $<
+	tar xf $< $@
 	touch $@
 
 gcc-java-%.tar.bz2:
@@ -233,6 +236,11 @@ gcc-java-%.tar.bz2:
 clean:
 	rm -f *.so *.jar
 	rm -fr $(DIR_C) $(DIR_JSRC_S) $(DIR_JBIN_S) $(DIR_JSRC_D) $(DIR_JBIN_D) $(DIR_JBIN_T)
+
+.PHONY: dist
+dist:
+	tar --transform='s|^|$(PACKAGE)_$(VERSION)/|g' \
+	  -czf $(PACKAGE)_$(VERSION).tar.gz Makefile README *.h *.diff test
 
 .PHONY: debug
 debug:
