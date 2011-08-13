@@ -39,6 +39,9 @@ jvmdir ?= $(libdir)/jvm
 # rest of build script, for devs
 ########################################################################
 
+PACKAGE := gmp-java
+VERSION := 0.1
+
 DIR_C := c
 DIR_JSRC_S := src_s
 DIR_JBIN_S := bin_s
@@ -132,7 +135,7 @@ install: all
 
 ## test targets
 
-.PHONY: check check_d check_s installcheck_d installcheck_s
+.PHONY: check check_d check_s installcheck
 check: check_d check_s ;
 
 RUN_TESTS = \
@@ -149,6 +152,8 @@ check_s: $(DIR_JBIN_T) $(ABS_JBIN_S) libgmp-jni.so
 # test installed system jar; any .so should already be on library path
 installcheck: $(DIR_JBIN_T)
 	CP=$(JAR_DIR)/gmp.jar; $(RUN_TESTS)
+	[ ! -f $(JAR_DIR)/gmp-nogcj.jar ] || \
+	  { CP=$(JAR_DIR)/gmp-nogcj.jar; $(RUN_TESTS); }
 
 ## DIR_JBIN_T - classes, test
 
@@ -221,7 +226,7 @@ $(DIR_C):
 	mkdir -p $@
 
 gcc-%/libjava/classpath: gcc-java-%.tar.bz2
-	tar xf $<
+	tar xf $< $@
 	touch $@
 
 gcc-java-%.tar.bz2:
@@ -233,6 +238,11 @@ gcc-java-%.tar.bz2:
 clean:
 	rm -f *.so *.jar
 	rm -fr $(DIR_C) $(DIR_JSRC_S) $(DIR_JBIN_S) $(DIR_JSRC_D) $(DIR_JBIN_D) $(DIR_JBIN_T)
+
+.PHONY: dist
+dist:
+	tar --transform='s|^|$(PACKAGE)_$(VERSION)/|g' \
+	  -czf $(PACKAGE)_$(VERSION).tar.gz Makefile README *.h *.diff test
 
 .PHONY: debug
 debug:
