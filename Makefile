@@ -135,7 +135,7 @@ install: all
 
 ## test targets
 
-.PHONY: check check_d check_s installcheck_d installcheck_s
+.PHONY: check check_d check_s installcheck
 check: check_d check_s ;
 
 RUN_TESTS = \
@@ -152,6 +152,8 @@ check_s: $(DIR_JBIN_T) $(ABS_JBIN_S) libgmp-jni.so
 # test installed system jar; any .so should already be on library path
 installcheck: $(DIR_JBIN_T)
 	CP=$(JAR_DIR)/gmp.jar; $(RUN_TESTS)
+	[ ! -f $(JAR_DIR)/gmp-nogcj.jar ] || \
+	  { CP=$(JAR_DIR)/gmp-nogcj.jar; $(RUN_TESTS); }
 
 ## DIR_JBIN_T - classes, test
 
