@@ -65,7 +65,7 @@ public class Benchmark extends TestCase {
 	TestGNU gnuTest;
 
 	protected void setUp() throws Exception {
-		assertTrue("can't load native code", gnu.java.math.BigInteger.usingNative());
+		assertTrue("can't load native code", gcj.math.BigInteger.usingNative());
 
 		rand = new SecureRandom();
 		rand.nextBoolean();
@@ -84,9 +84,9 @@ public class Benchmark extends TestCase {
 
 		gnuTest = new TestGNU(
 		  "gnu",
-		  new gnu.java.math.BigInteger(1, _sampleGenerator),
-		  new gnu.java.math.BigInteger(1, _samplePrime),
-		  new gnu.java.math.BigInteger(1, randbytes)
+		  new gcj.math.BigInteger(1, _sampleGenerator),
+		  new gcj.math.BigInteger(1, _samplePrime),
+		  new gcj.math.BigInteger(1, randbytes)
 		);
 
 	}
@@ -206,14 +206,14 @@ public class Benchmark extends TestCase {
 
 	static class TestGNU extends TestTimer {
 
-		final gnu.java.math.BigInteger g;
-		final gnu.java.math.BigInteger p;
-		final gnu.java.math.BigInteger k;
+		final gcj.math.BigInteger g;
+		final gcj.math.BigInteger p;
+		final gcj.math.BigInteger k;
 
 		public TestGNU(String name,
-		  gnu.java.math.BigInteger g,
-		  gnu.java.math.BigInteger p,
-		  gnu.java.math.BigInteger k) {
+		  gcj.math.BigInteger g,
+		  gcj.math.BigInteger p,
+		  gcj.math.BigInteger k) {
 			super(name);
 			this.g = g;
 			this.p = p;

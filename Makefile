@@ -40,7 +40,7 @@ jvmdir ?= $(libdir)/jvm
 ########################################################################
 
 PACKAGE := gmp-java
-VERSION := 0.1
+VERSION := 1.0
 
 DIR_C := c
 DIR_JSRC_S := src_s
@@ -58,14 +58,18 @@ TEST_FLAGS := -Dgnu.native.debug=true
 
 ORIG := gcc-$(GCJ_VERSION)/libjava/classpath
 
+PREFIX_RM := java/
+PREFIX_AD := gcj/
+
 TGT_JSRC_0 := gnu/classpath/Pointer32.java \
               gnu/classpath/Pointer64.java \
               gnu/classpath/Pointer.java \
               gnu/java/math/GMP.java \
               gnu/java/math/MPN.java
-TGT_JSRC_1 := java/math/BigInteger.java
-TGT_JSRC_D := gnu/$(TGT_JSRC_1)
-TGT_JSRC_S := $(TGT_JSRC_0) $(TGT_JSRC_D)
+TGT_ORIG_1 := java/math/BigInteger.java
+TGT_JSRC_1 := $(TGT_ORIG_1:$(PREFIX_RM)%=$(PREFIX_AD)%)
+TGT_JSRC_D := $(TGT_JSRC_1)
+TGT_JSRC_S := $(TGT_JSRC_0) $(TGT_JSRC_1)
 TGT_JBIN_D := $(TGT_JSRC_D:%.java=%.class)
 TGT_JBIN_S := $(TGT_JSRC_S:%.java=%.class)
 TGT_JSRC_GMP := gnu/java/math/GMP.java
@@ -183,15 +187,21 @@ $(DIR_JBIN_S)/%.class: $(DIR_JSRC_S)/%.java $(ABS_JSRC_S) | $(DIR_JBIN_S)
 
 ifdef GCJ_JSRC_E
 _ORIG_D = $(GCJ_JSRC)
-_COPY = cd $(DIR_JSRC_D)/gnu && unzip -o $(GCJ_JSRC) $*
+_COPY = cd $(DIR_JSRC_D) && unzip -o $(GCJ_JSRC) $(PREFIX_RM)$*
 else
 _ORIG_D = $(ORIG)
-_COPY = cd $(ORIG) && cp -t $(CURDIR)/$(DIR_JSRC_D)/gnu --parents $*
+_COPY = cd $(ORIG) && cp -t $(CURDIR)/$(DIR_JSRC_D) --parents $(PREFIX_RM)$*
 endif
 
-$(TGT_JSRC_1:%=$(DIR_JSRC_D)/gnu/%): \
-$(DIR_JSRC_D)/gnu/%: $(_ORIG_D) Makefile java1.diff | $(DIR_JSRC_D)/gnu
+_REPACKAGE = \
+	mkdir -p $(dir $(PREFIX_AD)$*) && \
+	mv $(PREFIX_RM)$* $(PREFIX_AD)$* && \
+	rmdir -p $(dir $(PREFIX_RM)$*)
+
+$(TGT_JSRC_1:%=$(DIR_JSRC_D)/%): \
+$(DIR_JSRC_D)/$(PREFIX_AD)%: $(_ORIG_D) Makefile java1.diff | $(DIR_JSRC_D)/gnu
 	$(_COPY)
+	cd $(DIR_JSRC_D) && $(_REPACKAGE)
 	patch -d $(DIR_JSRC_D) -p1 < java1.diff
 
 ## DIR_JSRC_S - sources, copied from gcj source
@@ -200,9 +210,10 @@ $(TGT_JSRC_0:%=$(DIR_JSRC_S)/%): \
 $(DIR_JSRC_S)/%: $(ORIG) Makefile | $(DIR_JSRC_S)
 	cd $(ORIG) && cp -t $(CURDIR)/$(DIR_JSRC_S) --parents $*
 
-$(TGT_JSRC_1:%=$(DIR_JSRC_S)/gnu/%): \
-$(DIR_JSRC_S)/gnu/%: $(ORIG) Makefile java1.diff java2.diff | $(DIR_JSRC_S)/gnu
-	cd $(ORIG) && cp -t $(CURDIR)/$(DIR_JSRC_S)/gnu --parents $*
+$(TGT_JSRC_1:%=$(DIR_JSRC_S)/%): \
+$(DIR_JSRC_S)/$(PREFIX_AD)%: $(ORIG) Makefile java1.diff java2.diff | $(DIR_JSRC_S)/gnu
+	cd $(ORIG) && cp -t $(CURDIR)/$(DIR_JSRC_S) --parents $(PREFIX_RM)$*
+	cd $(DIR_JSRC_S) && $(_REPACKAGE)
 	patch -d $(DIR_JSRC_S) -p1 < java1.diff
 	patch -d $(DIR_JSRC_S) -p1 < java2.diff
 

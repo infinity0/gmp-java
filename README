@@ -4,9 +4,9 @@ There are two forms ("d" and "s") of this library. Each of these require
 different Java class/library paths for user code to work; see the corresponding
 check_? target for details.
 
-The "meat" of this library is the class gnu.java.math.BigInteger. In GCJ, this
-class is simply java.math.BigInteger, but here we rename it so that you can use
-the former in a non-GCJ JVM too.
+The "meat" of this library is the class gcj.math.BigInteger. In GCJ, this class
+is simply java.math.BigInteger, but here we rename it so that you can use the
+former in a non-GCJ JVM too.
 
 ## Build against libgmp-dev and libgcj.jar
 

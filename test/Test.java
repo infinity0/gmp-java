@@ -1,4 +1,4 @@
-import gnu.java.math.BigInteger;
+import gcj.math.BigInteger;
 
 import junit.framework.TestCase;
 
