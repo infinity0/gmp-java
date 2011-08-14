@@ -5,16 +5,16 @@ Maintainer: Ximin Luo <infinity0@gmx.com>
 Build-Depends: debhelper (>= 7.0.50~), javahelper, default-jdk, make (>= 3.81), junit,
  gcj-4.6-jre-headless, gcj-4.6-jre-lib, gcj-4.6-source, libgmp-dev
 Standards-Version: 3.9.2
-#: Homepage: 
+#: Homepage:
 
 Package: libgmp-java
 Architecture: all
 Depends: ${java:Depends}, ${shlibs:Depends}, ${misc:Depends},
  gcj-4.6-jre-headless, gcj-4.6-jre-lib
 Description: GMP-based implementation of BigInteger
- The gmp-java library provides the class gnu.java.math.BigInteger. This
- is simply a renamed version of GCJ's java.math.BigInteger, so that you
- can use this with non-GCJ JVM (such as OpenJDK) as well.
+ The gmp-java library provides the class gcj.math.BigInteger. This is
+ simply a renamed version of GCJ's java.math.BigInteger, so that you can
+ use this with non-GCJ JVM (such as OpenJDK) as well.
  .
  It is the fastest known implementation of BigInteger, even faster than
  that of OpenJDK, since it's backed by the native GMP library.
@@ -24,14 +24,14 @@ Description: GMP-based implementation of BigInteger
 
 Package: libgmp-nogcj-java
 Architecture: all
-Depends: ${java:Depends}, ${shlibs:Depends}, ${misc:Depends}, 
+Depends: ${java:Depends}, ${shlibs:Depends}, ${misc:Depends},
  libgmp-nogcj-jni
 Provides: libgmp-java
 Conflicts: libgmp-java
 Description: GMP-based implementation of BigInteger (standalone version)
- The gmp-java library provides the class gnu.java.math.BigInteger. This
- is simply a renamed version of GCJ's java.math.BigInteger, so that you
- can use this with non-GCJ JVM (such as OpenJDK) as well.
+ The gmp-java library provides the class gcj.math.BigInteger. This is
+ simply a renamed version of GCJ's java.math.BigInteger, so that you can
+ use this with non-GCJ JVM (such as OpenJDK) as well.
  .
  It is the fastest known implementation of BigInteger, even faster than
  that of OpenJDK, since it's backed by the native GMP library.
@@ -41,11 +41,11 @@ Description: GMP-based implementation of BigInteger (standalone version)
 
 Package: libgmp-nogcj-jni
 Architecture: any
-Depends: ${java:Depends}, ${shlibs:Depends}, ${misc:Depends}, 
-Description: GMP-based implementation of BigInteger (standalone version) 
- The gmp-java library provides the class gnu.java.math.BigInteger. This
- is simply a renamed version of GCJ's java.math.BigInteger, so that you
- can use this with non-GCJ JVM (such as OpenJDK) as well.
+Depends: ${java:Depends}, ${shlibs:Depends}, ${misc:Depends},
+Description: GMP-based implementation of BigInteger (standalone version)
+ The gmp-java library provides the class gcj.math.BigInteger. This is
+ simply a renamed version of GCJ's java.math.BigInteger, so that you can
+ use this with non-GCJ JVM (such as OpenJDK) as well.
  .
  It is the fastest known implementation of BigInteger, even faster than
  that of OpenJDK, since it's backed by the native GMP library.

@@ -1,3 +1,9 @@
+gmp-java (1.0-1) unstable; urgency=low
+
+  * Repackage to gcj.math.* to avoid name collisions.
+
+ -- Ximin Luo <infinity0@gmx.com>  Sun, 14 Aug 2011 15:54:14 +0100
+
 gmp-java (0.1-1) UNRELEASED; urgency=low
 
   * Initial release.
